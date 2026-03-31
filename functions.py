@@ -1,68 +1,70 @@
-
-def register_students(students, id, name, age, course, status):
-    """register the student on the list."""
-    name = input("Enter student's name: ")
-    print("Successfully registered student\n")
+def register_students(students, name, id, age, course, status):
+    """Register the student on the list."""
     if not name.strip():
-        print("The name cannot be empty")
+        print("The name cannot be empty.")
         return False
-    if search_student(students, name):
-        print("a student with that name alreday exits")
+    if search_student(students, id):
+        print("A student with that ID already exists.")
         return False
-    students.appened({
-        "id":id,
+    students.append({
+        "id": id,
         "name": name.strip(),
-        "age":course,
-        "status":status   
+        "age": age,
+        "course": course,
+        "status": status
     })
-    print("sucecesfully registered student /n")
+    print("Successfully registered student.")
+    return True
 
-
-def search_student(students, name):
-    """searches and returns the student's name."""
+def search_student(students, id):
+    """Searches and returns a student by ID."""
     for s in students:
-        if s["name"].lower() == name.strip().lower():
+        if s["id"] == id:
             return s
     return None
 
 def show_students(students):
-    """shows the registered students."""
+    """Shows the registered students."""
     if not students:
-        print("there are no students.")
+        print("There are no students.")
         return
-    print(f"\n{'id':<10} {'name':>20} {'age':>8} {'course':>15} {'status':>10}")
+    print(f"\n{'ID':<10} {'Name':>20} {'Age':>8} {'Course':>15} {'Status':>10}")
     print("-" * 65)
     for s in students:
         print(f"{s['id']:<10} {s['name']:>20} {s['age']:>8} {s['course']:>15} {s['status']:>10}")
-        
-def update_students(students, name, new_age=None, new_course=None, new_status=None):
-    """Update age, course, and status."""
-    s = search_student(students, name)
+
+def update_students(students, id, new_name=None, new_age=None, new_course=None, new_status=None):
+    """Update name, age, course, and status by student ID."""
+    s = search_student(students, id)
     if not s:
-        print(f"not student fount with the name {name}")
+        print(f"No student found with ID {id}.")
         return False
-    if new_age is not None and new_age < 0:
-        print("Age cannot be a negative thing.")
-        s["age"]= new_age
-    if new_course is not None:
-        s["course"]= new_course
-    if new_status is not None:
-        s["status"]= new_status
-    print(f"students {name} update succesfully")
-    
+    if new_name:
+        s["name"] = new_name
+    if new_age is not None:
+        if new_age < 0:
+            print("Age cannot be negative.")
+            return False
+        s["age"] = new_age
+    if new_course:
+        s["course"] = new_course
+    if new_status:
+        s["status"] = new_status
+    print(f"Student with ID {id} updated successfully.")
+    return True
 
 def student_list(students):
-    """returns the student list."""
+    """Returns the student list."""
     if not students:
         return None
     return students
 
 def remove_student(students, name):
-    """Elimina un producto del inventario por nombre."""
+    """Removes a student from the list by name."""
     for i, s in enumerate(students):
         if s["name"].lower() == name.strip().lower():
             students.pop(i)
-            print(f"student {name} removed")
+            print(f"Student '{name}' removed.")
             return True
-        print(f"not students found with the name {name}")
-    return False 
+    print(f"No student found with the name '{name}'.")
+    return False

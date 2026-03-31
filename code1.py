@@ -4,60 +4,67 @@ students = []
 
 while True:
     print("\n--- MENU ---")
-    print("1. Add students")
+    print("1. Add student")
     print("2. Show students")
-    print("3. Search students (ID)")
-    print("4. Update students")
-    print("5. Delete students")
+    print("3. Search student (ID)")
+    print("4. Update student")
+    print("5. Delete student")
     print("6. Exit")
-    
-    option = input("option: ").strip()
+
+    option = input("Option: ").strip()
 
     if option == "1":
-        name = input("name: ")
+        name = input("Name: ").strip()
         if not name:
-            print("the name cannot be empty.")
+            print("The name cannot be empty.")
             continue
         try:
             id = int(input("ID: "))
-            age = int(input("age: "))
+            age = int(input("Age: "))
         except ValueError:
-            print("error: id and age must be numbers")
+            print("Error: ID and age must be numbers.")
             continue
-        try:
-            course = input("course: ").strip()
-            status = input("Indicate whether you are an active or inactive student: ").strip()
-        except ValueError:
-            print("Error: The student course or status cannot be empty.")
-        
-        if register_students(students, name, id, age, course, status):
-            print(f"student {name}' added correctly")
+        course = input("Course: ").strip()
+        status = input("Status (active/inactive): ").strip()
+
+        register_students(students, name, id, age, course, status)
 
     elif option == "2":
         show_students(students)
-        
+
     elif option == "3":
-        id = int(input("search: "))
+        try:
+            id = int(input("Enter ID to search: "))
+        except ValueError:
+            print("Error: ID must be a number.")
+            continue
         s = search_student(students, id)
         if s:
-            print(f"Encontrado → {s['id']} | name: {s['name']} | age: {s['age']} | course: {s['course']} | status: {s['status']}")
+            print(f"Found → ID: {s['id']} | Name: {s['name']} | Age: {s['age']} | Course: {s['course']} | Status: {s['status']}")
         else:
-            print("student not found.")
-            
+            print("Student not found.")
+
     elif option == "4":
-        name = input("Update the name (press enter to skip): ").strip()
-        id = input("student ID to update: ").strip()
-        age = input("Update the age(press Enter to skip)): ").strip()
-        course = input("Update the course (press Enter to skip)").strip()
-        status = input("Update the status (press Enter to skip)").strip()
-    
+        try:
+            id = int(input("Enter student ID to update: "))
+        except ValueError:
+            print("Error: ID must be a number.")
+            continue
+        new_name   = input("New name (press Enter to skip): ").strip() or None
+        new_age_str = input("New age (press Enter to skip): ").strip()
+        new_age    = int(new_age_str) if new_age_str else None
+        new_course = input("New course (press Enter to skip): ").strip() or None
+        new_status = input("New status (press Enter to skip): ").strip() or None
+
+        update_students(students, id, new_name, new_age, new_course, new_status)
+
     elif option == "5":
-        name = input("enter student name to delete").strip()
+        name = input("Enter student name to delete: ").strip()
         remove_student(students, name)
-    
+
     elif option == "6":
-        print("goodbye")
+        print("Goodbye!")
         break
-    
+
     else:
-        print("invalid option")
+        print("Invalid option.")
